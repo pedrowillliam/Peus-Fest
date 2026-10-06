@@ -1,6 +1,7 @@
 // Informações da festa. Edite aqui e o site inteiro se atualiza.
+// Datas no horário de Brasília (-03:00).
 export const party = {
-  birthdayName: 'Aniversariante', // TODO: seu nome
-  // Horário de Brasília. TODO: confirmar o horário de início
-  startsAt: new Date('2026-10-10T19:00:00-03:00'),
+  birthdayName: 'Pedro William',
+  birthday: new Date('2026-10-08T12:00:00-03:00'),
+  startsAt: new Date('2026-10-10T20:00:00-03:00'),
 };

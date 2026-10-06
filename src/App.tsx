@@ -1,10 +1,20 @@
 import { Navigate, Route, Routes } from 'react-router';
 import { useGuest } from './lib/guest';
+import { Admin } from './pages/Admin';
 import { GamePage } from './pages/GamePage';
 import { Home } from './pages/Home';
 import { Welcome } from './pages/Welcome';
 
 export function App() {
+  return (
+    <Routes>
+      <Route path="/admin" element={<Admin />} />
+      <Route path="*" element={<GuestArea />} />
+    </Routes>
+  );
+}
+
+function GuestArea() {
   const { guest } = useGuest();
 
   // Sem nome, qualquer link (inclusive QR code direto para uma brincadeira) cai na boas-vindas primeiro.
@@ -12,8 +22,8 @@ export function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Home guest={guest} />} />
-      <Route path="/jogo/:id" element={<GamePage />} />
+      <Route index element={<Home guest={guest} />} />
+      <Route path="jogo/:id" element={<GamePage guest={guest} />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
