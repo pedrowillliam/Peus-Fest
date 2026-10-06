@@ -32,5 +32,12 @@ create policy "Só admins leem os recados" on public.messages
   for select to authenticated
   using (exists (select 1 from public.admins where user_id = (select auth.uid())));
 
+-- Apagar recados: só admins, pelo botão da página /admin.
+grant delete on public.messages to authenticated;
+
+create policy "Só admins apagam recados" on public.messages
+  for delete to authenticated
+  using (exists (select 1 from public.admins where user_id = (select auth.uid())));
+
 -- Recados novos aparecem na hora na página /admin.
 alter publication supabase_realtime add table public.messages;

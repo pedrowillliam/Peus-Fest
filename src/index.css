@@ -347,7 +347,30 @@ textarea.over-limit:focus-visible {
 }
 
 .message-meta {
-  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 0.85rem;
   color: var(--muted);
+}
+
+.delete-button {
+  flex-shrink: 0;
+  font: inherit;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 107, 107, 0.45);
+  border-radius: 999px;
+  background: none;
+  color: var(--danger);
+  cursor: pointer;
+}
+
+.delete-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.delete-error {
+  margin: 0 0 12px;
 }

@@ -112,6 +112,8 @@ function LoginForm({ client }: { client: SupabaseClient }) {
 function Inbox({ client, session }: { client: SupabaseClient; session: Session }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'not-admin' | 'error'>('loading');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteFailed, setDeleteFailed] = useState(false);
   const userId = session.user.id;
 
   useEffect(() => {
@@ -123,6 +125,11 @@ function Inbox({ client, session }: { client: SupabaseClient; session: Session }
       .channel(`recados-${Math.random().toString(36).slice(2)}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
         setMessages((prev) => merge(prev, [payload.new as Message]));
+      })
+      // Recado apagado em outro aparelho some daqui também (o payload só traz o id).
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, (payload) => {
+        const { id } = payload.old as Partial<Message>;
+        setMessages((prev) => prev.filter((m) => m.id !== id));
       })
       .subscribe();
 
@@ -146,6 +153,22 @@ function Inbox({ client, session }: { client: SupabaseClient; session: Session }
     };
   }, [client, userId]);
 
+  async function remove(message: Message) {
+    if (!window.confirm(`Apagar o recado de ${message.author}? Não dá para desfazer.`)) return;
+
+    setDeletingId(message.id);
+    setDeleteFailed(false);
+    // O .select() mostra se apagou de fato: sem permissão, o RLS ignora a linha e não devolve erro.
+    const { data, error } = await client.from('messages').delete().eq('id', message.id).select('id');
+    setDeletingId(null);
+
+    if (error || !data?.length) {
+      setDeleteFailed(true);
+      return;
+    }
+    setMessages((prev) => prev.filter((m) => m.id !== message.id));
+  }
+
   return (
     <>
       <p className="muted greeting">
@@ -164,13 +187,28 @@ function Inbox({ client, session }: { client: SupabaseClient; session: Session }
             {messages.length} {messages.length === 1 ? 'recado' : 'recados'}
           </h2>
           {messages.length === 0 && <p className="muted">Nenhum recado ainda. Eles aparecem aqui na hora.</p>}
+          {deleteFailed && (
+            <p className="notice delete-error" role="alert">
+              Não foi possível apagar o recado. Tente de novo.
+            </p>
+          )}
           <ul className="message-list">
             {messages.map((m) => (
               <li key={m.id} className="message-card">
                 <p className="message-body">{m.body}</p>
-                <p className="message-meta">
-                  <strong>{m.author}</strong> · {timeFormat.format(new Date(m.created_at))}
-                </p>
+                <div className="message-meta">
+                  <span>
+                    <strong>{m.author}</strong> · {timeFormat.format(new Date(m.created_at))}
+                  </span>
+                  <button
+                    type="button"
+                    className="delete-button"
+                    onClick={() => remove(m)}
+                    disabled={deletingId === m.id}
+                  >
+                    {deletingId === m.id ? 'Apagando...' : 'Apagar'}
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

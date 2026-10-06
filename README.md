@@ -34,7 +34,7 @@ quem lê é só a conta de admin, na página **`/admin`**. O bloqueio é feito p
    (botão **Connect** no topo do painel).
 
 Sem o `.env.local`, o site abre normalmente, mas os recados mostram que não estão conectados.
-Para apagar um recado, use o **Table Editor** do Supabase (tabela `messages`).
+Para apagar um recado, use o botão **Apagar** no `/admin` (ou o **Table Editor** do Supabase, tabela `messages`).
 
 ## Onde mexer
 
