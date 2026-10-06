@@ -12,7 +12,7 @@ export function Welcome() {
       <BirthdayPhoto src={party.photos.welcome} size={140} />
       <h1>Bem-vindo ao aniversário de {party.nickname}</h1>
       <p className="muted">
-        Fico muito feliz com a sua presença, informe o seu nome para começarmos a brincadeira.
+        Fico muito feliz com a sua presença, coloque o seu nome para começarmos a brincadeira.
       </p>
       <form
         className="name-form"
