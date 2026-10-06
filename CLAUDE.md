@@ -26,7 +26,8 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
 
 ## Estrutura
 
-- `src/config.ts`: nome, data do aniversário e início da festa. Os textos usam `party.birthdayName`, nunca o nome escrito direto.
+- `src/config.ts`: nome, apelido ("Peu"), fotos (boas-vindas e home), data do aniversário e início da festa. Os textos usam
+  `party.birthdayName` / `party.nickname`, nunca o nome escrito direto.
 - `src/lib/guest.tsx`: convidado = `{ id, name }` no localStorage. O id sobrevive à troca de nome.
 - `src/games/registry.ts`: lista de brincadeiras. Uma entrada sem `component` aparece como "em breve".
 - `src/games/MessageBox.tsx`: Caixa de recados (convidado só **envia**).
