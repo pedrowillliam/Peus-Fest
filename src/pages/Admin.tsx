@@ -1,5 +1,6 @@
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 import { formatDateTime } from '../lib/format';
 import { mergeById } from '../lib/merge';
 import { supabase } from '../lib/supabase';
@@ -165,6 +166,13 @@ function Inbox({ client, session }: { client: SupabaseClient; session: Session }
           sair
         </button>
       </p>
+
+      {status === 'ready' && (
+        <p className="muted admin-tip">
+          Fotos: com este login, abra o <Link to="/jogo/fotos">Mural de fotos</Link> neste aparelho e toque numa
+          foto para ver o botão Apagar.
+        </p>
+      )}
 
       {status === 'loading' && <p className="muted">Carregando recados...</p>}
       {status === 'error' && <p className="notice">Não foi possível carregar os recados.</p>}

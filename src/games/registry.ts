@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import { party } from '../config';
 import type { Guest } from '../lib/guest';
 import { MessageBox } from './MessageBox';
+import { PhotoWall } from './PhotoWall';
 import { ShotRoulette } from './ShotRoulette';
 
 export type Game = {
@@ -27,5 +28,12 @@ export const games: Game[] = [
     title: 'Roleta de shots',
     description: 'Gire a roleta e cumpra o desafio que cair.',
     component: ShotRoulette,
+  },
+  {
+    id: 'fotos',
+    emoji: '📸',
+    title: 'Mural de fotos',
+    description: 'Tire fotos da festa e veja as de todo mundo.',
+    component: PhotoWall,
   },
 ];

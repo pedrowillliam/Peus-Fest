@@ -29,6 +29,7 @@
   --font-display: 'Bebas Neue', system-ui, sans-serif;
   --shadow: rgba(0, 0, 0, 0.5);
   --popup-bg: rgba(4, 6, 12, 0.9);
+  --overlay: rgba(0, 0, 0, 0.94);
   --radius: 18px;
 
   color-scheme: dark;
@@ -629,4 +630,164 @@ textarea.over-limit:focus-visible {
   .roulette-popup {
     animation: none;
   }
+}
+
+/* Mural de fotos */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.button:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.button.is-disabled {
+  opacity: 0.5;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.button-secondary {
+  border: 1px solid var(--accent-border);
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.photo-wall {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.photo-wall h2 {
+  margin: 16px 0 0;
+}
+
+.photo-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.photo-actions .button {
+  position: relative;
+  text-align: center;
+}
+
+.photo-hint {
+  margin: -4px 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.photo-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.photo-tile {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.photo-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: max(16px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  background: var(--overlay);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 75dvh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.lightbox-bar {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lightbox-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.lightbox-close {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.lightbox-save {
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--button-to);
+  color: var(--on-accent);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lightbox-save:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.lightbox-error {
+  max-width: 480px;
+  margin: 0;
+}
+
+.admin-tip {
+  font-size: 0.9rem;
+}
+
+.admin-tip a {
+  color: var(--accent);
 }
