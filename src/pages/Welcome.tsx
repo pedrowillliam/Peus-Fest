@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BirthdayPhoto } from '../components/BirthdayPhoto';
 import { party } from '../config';
 import { useGuest } from '../lib/guest';
 
@@ -8,9 +9,11 @@ export function Welcome() {
 
   return (
     <main className="page welcome">
-      <div className="hero-emoji">🎉</div>
-      <h1>Aniversário de {party.birthdayName}</h1>
-      <p className="muted">Que bom ter você aqui! Antes de começar, como você se chama?</p>
+      <BirthdayPhoto src={party.photos.welcome} size={140} />
+      <h1>Bem-vindo ao aniversário de {party.nickname}</h1>
+      <p className="muted">
+        Fico muito feliz com a sua presença, informe o seu nome para começarmos a brincadeira.
+      </p>
       <form
         className="name-form"
         onSubmit={(e) => {

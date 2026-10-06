@@ -70,12 +70,6 @@ h2 {
   color: var(--muted);
 }
 
-.hero-emoji {
-  font-size: 4rem;
-  line-height: 1;
-  margin-bottom: 16px;
-}
-
 /* Boas-vindas */
 .welcome {
   min-height: 100dvh;
@@ -83,6 +77,11 @@ h2 {
   flex-direction: column;
   justify-content: center;
   text-align: center;
+}
+
+.welcome .hero-photo {
+  align-self: center;
+  margin-bottom: 20px;
 }
 
 .name-form {
