@@ -1,18 +1,9 @@
 import { Link } from 'react-router';
 import { BirthdayPhoto } from '../components/BirthdayPhoto';
-import { Countdown } from '../components/Countdown';
+import { PartyStats } from '../components/PartyStats';
 import { party } from '../config';
 import { games } from '../games/registry';
 import { useGuest, type Guest } from '../lib/guest';
-
-const birthdayFormat = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long' });
-const partyFormat = new Intl.DateTimeFormat('pt-BR', {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-  hour: '2-digit',
-  minute: '2-digit',
-});
 
 export function Home({ guest }: { guest: Guest }) {
   const { forget } = useGuest();
@@ -22,19 +13,18 @@ export function Home({ guest }: { guest: Guest }) {
       <p className="muted greeting">
         Oi, <strong>{guest.name}</strong> 👋{' '}
         <button type="button" className="link-button" onClick={forget}>
-          não é você?
+          Trocar de nome
         </button>
       </p>
       <div className="hero">
         <BirthdayPhoto src={party.photos.home} size={96} />
-        <h1>Aniversário de {party.birthdayName}</h1>
+        <div>
+          <h1>Farrinha do {party.nickname}</h1>
+          <p className="muted tagline">Há {party.age} anos sendo gostoso nesse mundo</p>
+        </div>
       </div>
-      <p className="muted dates">
-        🎂 Aniversário: {birthdayFormat.format(party.birthday)}
-        <br />
-        🎉 Festa: {partyFormat.format(party.startsAt)}
-      </p>
-      <Countdown target={party.startsAt} />
+
+      <PartyStats />
 
       <h2>Brincadeiras</h2>
       <ul className="game-list">
@@ -53,6 +43,20 @@ export function Home({ guest }: { guest: Guest }) {
           </li>
         ))}
       </ul>
+
+      <h2>Música</h2>
+      <a href={party.playlistUrl} target="_blank" rel="noopener noreferrer" className="game-card">
+        <span className="game-emoji" aria-hidden="true">
+          🎵
+        </span>
+        <span className="game-text">
+          <strong>Playlist da festa</strong>
+          <span className="muted">Adicione suas músicas no Spotify.</span>
+        </span>
+        <span className="external-mark" aria-label="abre o Spotify">
+          ↗
+        </span>
+      </a>
     </main>
   );
 }
