@@ -172,7 +172,7 @@ export function ShotRoulette() {
         </div>
       </div>
 
-      <button type="button" className="button" onClick={spin} disabled={spinning}>
+      <button type="button" className="button spin-button" onClick={spin} disabled={spinning}>
         {spinning ? 'Girando...' : 'Girar roleta'}
       </button>
 
