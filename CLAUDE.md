@@ -31,6 +31,10 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
 - `src/lib/guest.tsx`: convidado = `{ id, name }` no localStorage. O id sobrevive à troca de nome.
 - `src/games/registry.ts`: lista de brincadeiras. Uma entrada sem `component` aparece como "em breve".
 - `src/games/MessageBox.tsx`: Caixa de recados (convidado só **envia**).
+- `src/games/ShotRoulette.tsx`: Roleta de shots, só no navegador (sem banco). O sorteio é uniforme e a
+  conta do ângulo final garante que a fatia sob o ponteiro é a sorteada. Mexeu nas opções? Mantenha
+  `label` curto (cabe na fatia) e `text` com o desafio completo. Fatias em vermelho e preto, sem
+  emoji (só o "Se fudeu 💸"), com a fonte Bebas Neue (`--font-display`, embutida via `@fontsource`).
 - `src/pages/Admin.tsx`: `/admin`, com login Supabase (e-mail + senha), onde só o aniversariante **lê** os recados, ao vivo via realtime.
 - `src/App.tsx`: `/admin` fica fora do portão de nome. O resto exige nome (`Welcome`) antes.
 - `supabase/schema.sql`: tabelas `messages` e `admins`, com RLS.
@@ -43,7 +47,10 @@ Só o aniversariante pode ler os recados. Convidados não leem nenhum, nem o pr�
 - O insert do convidado **não** pode ter `.select()`: o anon não tem policy de leitura.
 - Leitura e exclusão só são liberadas para `auth.uid()` presente em `public.admins`.
 - Nunca coloque e-mail, senha do banco ou a secret key (`sb_secret_...`) no repositório.
-  O `.env.local` (gitignored) tem só `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY`.
+  O `.env.local` (gitignored) tem `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` e `VITE_PIX_KEY`.
+- `VITE_PIX_KEY` é a chave Pix pessoal do usuário (cartão "Se fudeu" da roleta). Nunca escreva o valor em
+  arquivo versionado, commit, CLAUDE.md ou saída de comando. Como toda `VITE_*`, ela vai no bundle
+  público do site. Nos testes visuais, use uma chave falsa.
 - Mudou o schema? Atualize `supabase/schema.sql` (script completo, para banco novo) e aplique só a
   diferença no banco existente: pelo MCP do Supabase (configurado com escopo local, se estiver
   autenticado), mostrando o SQL ao usuário antes, ou passando o trecho para ele rodar no SQL Editor.

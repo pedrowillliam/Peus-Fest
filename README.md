@@ -34,6 +34,9 @@ quem lê é só a conta de admin, na página **`/admin`**. O bloqueio é feito p
    (botão **Connect** no topo do painel).
 
 Sem o `.env.local`, o site abre normalmente, mas os recados mostram que não estão conectados.
+
+A chave Pix do cartão "Se fudeu" da roleta fica em `VITE_PIX_KEY` (no `.env.local` e nas variáveis
+da Vercel). Ela não vai para o repositório, mas aparece para quem abrir o site.
 Para apagar um recado, use o botão **Apagar** no `/admin` (ou o **Table Editor** do Supabase, tabela `messages`).
 
 ## Onde mexer
