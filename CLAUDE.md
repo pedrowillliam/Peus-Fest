@@ -35,9 +35,23 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
   conta do ângulo final garante que a fatia sob o ponteiro é a sorteada. Mexeu nas opções? Mantenha
   `label` curto (cabe na fatia) e `text` com o desafio completo. Fatias em vermelho e preto, sem
   emoji (só o "Se fudeu 💸"), com a fonte Bebas Neue (`--font-display`, embutida via `@fontsource`).
+- `src/games/PhotoWall.tsx`: Mural de fotos. Todos enviam ("Tirar foto" com `capture`, "Galeria" com
+  até 10 de uma vez) e todos veem, ao vivo via realtime. Antes do upload, `src/lib/images.ts` reduz no
+  aparelho: 1600px (~200-300 KB) + miniatura de 480px (~40 KB) para a grade. Só quem é admin vê o botão
+  "Apagar foto" na foto ampliada (`src/lib/admin.ts`, `useIsAdmin`); apaga a linha e depois os arquivos.
+  **Só fotos, nunca vídeo** (requisito do usuário): aviso fixo na tela, vídeos escolhidos são recusados
+  antes do envio com mensagem própria, e o bucket só aceita `image/jpeg`.
+  Botão "Baixar" na foto ampliada (`src/lib/saveImage.ts`): no Android faz download comum (vai para a
+  galeria); no iPhone abre o menu de compartilhar ("Salvar Imagem" vai para o app Fotos). O arquivo é
+  buscado ao ampliar, porque o iPhone só aceita `navigator.share` logo após o toque, e o `<img>` usa
+  `crossOrigin` para reaproveitar o cache. O storage do Supabase responde com CORS `*`.
+- `src/lib/`: `uuid.ts` (UUID v4 que funciona em HTTP), `merge.ts` (junta listas por id, mais novo
+  primeiro), `format.ts` (data/hora pt-BR).
 - `src/pages/Admin.tsx`: `/admin`, com login Supabase (e-mail + senha), onde só o aniversariante **lê** os recados, ao vivo via realtime.
 - `src/App.tsx`: `/admin` fica fora do portão de nome. O resto exige nome (`Welcome`) antes.
 - `supabase/schema.sql`: tabelas `messages` e `admins`, com RLS.
+- `supabase/fotos.sql`: tabela `photos`, bucket público `photos` (só JPEG, até 3 MB) e policies.
+  Roda depois do `schema.sql`.
 
 ## Regras de privacidade dos recados (requisito do usuário)
 
@@ -51,6 +65,8 @@ Só o aniversariante pode ler os recados. Convidados não leem nenhum, nem o pr�
 - `VITE_PIX_KEY` é a chave Pix pessoal do usuário (cartão "Se fudeu" da roleta). Nunca escreva o valor em
   arquivo versionado, commit, CLAUDE.md ou saída de comando. Como toda `VITE_*`, ela vai no bundle
   público do site. Nos testes visuais, use uma chave falsa.
+- Fotos são públicas (mural): todos leem e enviam, mas apagar a linha em `photos` e os arquivos no
+  bucket só é liberado para admins, também por RLS (inclusive em `storage.objects`).
 - Mudou o schema? Atualize `supabase/schema.sql` (script completo, para banco novo) e aplique só a
   diferença no banco existente: pelo MCP do Supabase (configurado com escopo local, se estiver
   autenticado), mostrando o SQL ao usuário antes, ou passando o trecho para ele rodar no SQL Editor.
@@ -68,7 +84,7 @@ Siga o [Conventional Commits](https://www.conventionalcommits.org/pt-br/), com a
 - Formato: `tipo(escopo opcional): descrição`. O tipo segue o padrão em inglês (`feat`, `fix`,
   `docs`, `style`, `refactor`, `perf`, `test`, `build`, `chore`, `ci`). A descrição vai em
   português, minúscula, no presente e sem ponto final.
-- Escopos usados: `recados`, `admin`, `home`, `boas-vindas`, `supabase`, `config`.
+- Escopos usados: `recados`, `admin`, `home`, `boas-vindas`, `roleta`, `fotos`, `supabase`, `config`.
 - Corpo opcional em pt-BR explicando o porquê. Mudança que quebra algo leva `!` ou um rodapé `BREAKING CHANGE:`.
 - Um assunto por commit: separe, por exemplo, `feat` de `docs` quando forem mudanças independentes.
 
@@ -90,6 +106,14 @@ janela ficar mais estreita que ~500px. Para ver em largura de celular, sirva uma
 `<iframe style="width:390px">` apontando para a rota, e preencha `aniversario:id`/`aniversario:nome`
 no localStorage antes para pular as boas-vindas. Use um `--user-data-dir` próprio e encerre só
 esses processos do Edge depois (eles não fecham sozinhos). Nunca encerre o Edge do usuário.
+
+O `--screenshot` com `--virtual-time-budget` acelera o relógio da página, mas **não espera** trabalho
+em segundo plano (decodificar/reduzir imagem, rede): o print sai antes do fim e parece bug.
+Animações CSS também podem aparecer pela metade. Para fluxos assíncronos (upload de fotos), suba o Edge
+com `--remote-debugging-port`, controle pelo DevTools Protocol (o `WebSocket` nativo do Node 24 basta)
+e tire o print só quando a página de teste sinalizar que terminou. Para testar sem o banco real, use um
+servidor falso local que imite as rotas REST/storage do Supabase. Atenção: o supabase-js envia o
+upload de `Blob` como `multipart/form-data`.
 
 ## Ambiente
 

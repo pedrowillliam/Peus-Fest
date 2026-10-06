@@ -32,12 +32,16 @@ quem lê é só a conta de admin, na página **`/admin`**. O bloqueio é feito p
 5. Recomendado: em **Authentication → Sign In / Providers**, desligue **Allow new users to sign up**.
 6. Copie `.env.example` para `.env.local` e preencha com a **Project URL** e a **Publishable key**
    (botão **Connect** no topo do painel).
+7. Para o mural de fotos, rode também [`supabase/fotos.sql`](supabase/fotos.sql) no **SQL Editor**
+   (cria a tabela `photos` e o bucket de arquivos `photos`).
 
 Sem o `.env.local`, o site abre normalmente, mas os recados mostram que não estão conectados.
 
 A chave Pix do cartão "Se fudeu" da roleta fica em `VITE_PIX_KEY` (no `.env.local` e nas variáveis
 da Vercel). Ela não vai para o repositório, mas aparece para quem abrir o site.
 Para apagar um recado, use o botão **Apagar** no `/admin` (ou o **Table Editor** do Supabase, tabela `messages`).
+Para apagar uma foto, entre no `/admin` e depois abra o **Mural de fotos** no mesmo aparelho: a foto
+ampliada mostra o botão **Apagar foto**, só para a conta de admin.
 
 ## Onde mexer
 
@@ -46,17 +50,21 @@ Para apagar um recado, use o botão **Apagar** no `/admin` (ou o **Table Editor*
 | `src/config.ts` | Nome e datas |
 | `src/games/registry.ts` | Lista de brincadeiras da tela inicial |
 | `src/games/MessageBox.tsx` | Caixa de recados (convidados enviam) |
+| `src/games/ShotRoulette.tsx` | Roleta de shots |
+| `src/games/PhotoWall.tsx` | Mural de fotos (todos enviam e veem; admin apaga) |
 | `src/pages/Admin.tsx` | Página `/admin`, onde só você lê os recados |
 | `src/index.css` | Cores do tema (no topo do arquivo) |
 | `src/pages/` | Telas: boas-vindas, início e página de cada brincadeira |
 | `src/lib/guest.tsx` | Identificação do convidado (nome salvo no celular) |
-| `supabase/schema.sql` | Tabelas e permissões do banco |
+| `supabase/schema.sql` | Tabelas e permissões dos recados |
+| `supabase/fotos.sql` | Tabela, bucket e permissões do mural de fotos |
 
 ## Como funciona
 
 1. O convidado abre o site e digita o nome (fica salvo no celular, não precisa digitar de novo).
 2. Tela inicial: datas, contagem regressiva para a festa e lista de brincadeiras.
-3. Cada brincadeira tem sua página em `/jogo/<id>`. Hoje: **Caixa de recados** (`/jogo/recados`).
+3. Cada brincadeira tem sua página em `/jogo/<id>`. Hoje: **Caixa de recados** (`/jogo/recados`),
+   **Roleta de shots** (`/jogo/roleta`) e **Mural de fotos** (`/jogo/fotos`).
 
 ## Cronograma
 
