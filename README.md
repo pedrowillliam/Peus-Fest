@@ -34,6 +34,8 @@ quem lê é só a conta de admin, na página **`/admin`**. O bloqueio é feito p
    (botão **Connect** no topo do painel).
 7. Para o mural de fotos, rode também [`supabase/fotos.sql`](supabase/fotos.sql) no **SQL Editor**
    (cria a tabela `photos` e o bucket de arquivos `photos`).
+8. Para o placar da home, rode [`supabase/placar.sql`](supabase/placar.sql) (função que devolve só as
+   contagens de fotos e recados). Sem ela, o placar simplesmente não aparece.
 
 Sem o `.env.local`, o site abre normalmente, mas os recados mostram que não estão conectados.
 
@@ -47,7 +49,8 @@ ampliada mostra o botão **Apagar foto**, só para a conta de admin.
 
 | Arquivo | O que tem |
 | --- | --- |
-| `src/config.ts` | Nome e datas |
+| `src/config.ts` | Nome, apelido, idade, fotos e link da playlist |
+| `src/components/PartyStats.tsx` | Placar da festa na home (fotos e recados) |
 | `src/games/registry.ts` | Lista de brincadeiras da tela inicial |
 | `src/games/MessageBox.tsx` | Caixa de recados (convidados enviam) |
 | `src/games/ShotRoulette.tsx` | Roleta de shots |
@@ -58,11 +61,12 @@ ampliada mostra o botão **Apagar foto**, só para a conta de admin.
 | `src/lib/guest.tsx` | Identificação do convidado (nome salvo no celular) |
 | `supabase/schema.sql` | Tabelas e permissões dos recados |
 | `supabase/fotos.sql` | Tabela, bucket e permissões do mural de fotos |
+| `supabase/placar.sql` | Contagens do placar (sem expor o conteúdo dos recados) |
 
 ## Como funciona
 
 1. O convidado abre o site e digita o nome (fica salvo no celular, não precisa digitar de novo).
-2. Tela inicial: datas, contagem regressiva para a festa e lista de brincadeiras.
+2. Tela inicial: "Farrinha do Peu", foto, frase, placar da festa, brincadeiras e a playlist do Spotify.
 3. Cada brincadeira tem sua página em `/jogo/<id>`. Hoje: **Caixa de recados** (`/jogo/recados`),
    **Roleta de shots** (`/jogo/roleta`) e **Mural de fotos** (`/jogo/fotos`).
 

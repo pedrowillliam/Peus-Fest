@@ -26,8 +26,14 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
 
 ## Estrutura
 
-- `src/config.ts`: nome, apelido ("Peu"), fotos (boas-vindas e home), data do aniversário e início da festa. Os textos usam
-  `party.birthdayName` / `party.nickname`, nunca o nome escrito direto.
+- `src/config.ts`: nome, apelido ("Peu"), idade e fotos (boas-vindas e home). Os textos usam
+  `party.birthdayName` / `party.nickname` / `party.age`, nunca escritos direto. A home não tem mais
+  datas nem contagem regressiva (pedido do usuário). `party.playlistUrl` é o link de **convite** da
+  playlist colaborativa do Spotify. Não limpe os parâmetros: o `pt=` é o que deixa adicionar músicas.
+- `src/components/PartyStats.tsx`: "Placar da festa" na home (fotos postadas e recados enviados).
+  Chama a função `party_stats()` (`supabase/placar.sql`, security definer que devolve só as contagens)
+  a cada 20 s com a tela visível, porque recados não chegam por realtime para convidados. Se a função
+  falhar ou não existir, o placar some sem quebrar a home.
 - `src/lib/guest.tsx`: convidado = `{ id, name }` no localStorage. O id sobrevive à troca de nome.
 - `src/games/registry.ts`: lista de brincadeiras. Uma entrada sem `component` aparece como "em breve".
 - `src/games/MessageBox.tsx`: Caixa de recados (convidado só **envia**).
@@ -51,7 +57,7 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
 - `src/App.tsx`: `/admin` fica fora do portão de nome. O resto exige nome (`Welcome`) antes.
 - `supabase/schema.sql`: tabelas `messages` e `admins`, com RLS.
 - `supabase/fotos.sql`: tabela `photos`, bucket público `photos` (só JPEG, até 3 MB) e policies.
-  Roda depois do `schema.sql`.
+  Roda depois do `schema.sql`. `supabase/placar.sql` roda depois do `fotos.sql`.
 
 ## Regras de privacidade dos recados (requisito do usuário)
 
