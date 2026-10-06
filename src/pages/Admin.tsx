@@ -1,5 +1,7 @@
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import { formatDateTime } from '../lib/format';
+import { mergeById } from '../lib/merge';
 import { supabase } from '../lib/supabase';
 
 // Página só para quem está na tabela admins (veja supabase/schema.sql).
@@ -13,20 +15,6 @@ type Message = {
 };
 
 const COLUMNS = 'id, author, body, created_at';
-
-const timeFormat = new Intl.DateTimeFormat('pt-BR', {
-  day: '2-digit',
-  month: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-});
-
-// Junta sem duplicar (um recado pode chegar pela busca e pelo realtime) e deixa o mais novo primeiro.
-function merge(current: Message[], incoming: Message[]): Message[] {
-  const byId = new Map(current.map((m) => [m.id, m]));
-  for (const m of incoming) byId.set(m.id, m);
-  return [...byId.values()].sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
-}
 
 export function Admin() {
   return (
@@ -124,7 +112,7 @@ function Inbox({ client, session }: { client: SupabaseClient; session: Session }
     const channel = client
       .channel(`recados-${Math.random().toString(36).slice(2)}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-        setMessages((prev) => merge(prev, [payload.new as Message]));
+        setMessages((prev) => mergeById(prev, [payload.new as Message]));
       })
       // Recado apagado em outro aparelho some daqui também (o payload só traz o id).
       .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, (payload) => {
@@ -142,7 +130,7 @@ function Inbox({ client, session }: { client: SupabaseClient; session: Session }
       if (admin.error || list.error) setStatus('error');
       else if (!admin.data) setStatus('not-admin');
       else {
-        setMessages((prev) => merge(prev, list.data));
+        setMessages((prev) => mergeById(prev, list.data));
         setStatus('ready');
       }
     });
@@ -198,7 +186,7 @@ function Inbox({ client, session }: { client: SupabaseClient; session: Session }
                 <p className="message-body">{m.body}</p>
                 <div className="message-meta">
                   <span>
-                    <strong>{m.author}</strong> · {timeFormat.format(new Date(m.created_at))}
+                    <strong>{m.author}</strong> · {formatDateTime(m.created_at)}
                   </span>
                   <button
                     type="button"
