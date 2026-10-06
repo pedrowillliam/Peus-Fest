@@ -71,9 +71,8 @@ function PixCopy({ pixKey }: { pixKey: string }) {
   return (
     // Tocar aqui não fecha o pop-up.
     <div className="pix-copy" onClick={(e) => e.stopPropagation()}>
-      <span className="pix-key">
-        Pix: <span className="pix-key-value">{pixKey}</span>
-      </span>
+      <span className="pix-key-label">Chave Pix</span>
+      <span className="pix-key-value">{pixKey}</span>
       <button
         type="button"
         className="pix-copy-button"
@@ -93,6 +92,7 @@ function PixCopy({ pixKey }: { pixKey: string }) {
           Não deu para copiar. Segure o número para selecionar.
         </span>
       )}
+      <span className="pix-note">Obs: se você não fizer eu saberei, o site é meu, rs!</span>
     </div>
   );
 }

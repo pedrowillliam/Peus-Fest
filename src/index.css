@@ -519,7 +519,7 @@ textarea.over-limit:focus-visible {
 }
 
 .roulette-popup {
-  width: 84%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -567,24 +567,29 @@ textarea.over-limit:focus-visible {
 .pix-copy {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 10px;
+  gap: 6px;
+  padding: 10px 8px;
   border: 1px solid var(--accent-border);
   border-radius: 12px;
   background: var(--accent-soft);
   cursor: default;
 }
 
-.pix-key {
+.pix-key-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+/* Chave aleatória tem 36 caracteres: fonte menor para caber numa linha no celular. */
+.pix-key-value {
+  font-size: clamp(0.68rem, 3.2vw, 0.8rem);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
-}
-
-.pix-key-value {
   user-select: all;
   -webkit-user-select: all;
 }
@@ -593,6 +598,13 @@ textarea.over-limit:focus-visible {
   width: 100%;
   font-size: 0.8rem;
   color: var(--danger);
+}
+
+.pix-note {
+  width: 100%;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--muted);
 }
 
 .pix-copy-button {
