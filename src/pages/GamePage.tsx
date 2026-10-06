@@ -25,7 +25,6 @@ export function GamePage({ guest }: { guest: Guest }) {
       <Link to="/" className="back">
         ← Voltar
       </Link>
-      <div className="game-emoji-hero">{game.emoji}</div>
       <h1>{game.title}</h1>
       <p className="muted">{game.description}</p>
       {Content ? <Content guest={guest} /> : <span className="badge">em breve</span>}
