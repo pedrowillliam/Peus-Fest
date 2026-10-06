@@ -1,15 +1,24 @@
-/* Tema da festa: troque as cores aqui. */
+/* Tema da festa (preto e azul): todas as cores ficam aqui. */
 :root {
-  --bg: #1a1033;
-  --surface: rgba(255, 255, 255, 0.07);
-  --surface-hover: rgba(255, 255, 255, 0.12);
-  --border: rgba(255, 255, 255, 0.12);
-  --text: #fdf7ff;
-  --muted: #c3b6dd;
-  --accent: #ffcc33;
-  --accent-2: #ff5fa2;
-  --on-accent: #1a1033;
+  --bg: #04060c;
+  --bg-glow-1: #0d2a66;
+  --bg-glow-2: #081a42;
+  --surface: rgba(110, 150, 255, 0.06);
+  --surface-hover: rgba(110, 150, 255, 0.11);
+  --border: rgba(120, 160, 255, 0.16);
+  --text: #eef3ff;
+  --muted: #98a9c9;
+  --accent: #5aa9ff;
+  --accent-soft: rgba(90, 169, 255, 0.14);
+  --accent-border: rgba(90, 169, 255, 0.35);
+  --accent-2: #22d3ee;
+  --button-from: #1e40af;
+  --button-to: #2563eb;
+  --button-glow: rgba(37, 99, 235, 0.35);
+  --on-accent: #ffffff;
   --danger: #ff6b6b;
+  --danger-soft: rgba(255, 107, 107, 0.12);
+  --danger-border: rgba(255, 107, 107, 0.45);
   --radius: 18px;
 
   color-scheme: dark;
@@ -30,8 +39,8 @@ body {
 body {
   min-height: 100dvh;
   background:
-    radial-gradient(circle at 15% 0%, #3b1d6e 0%, transparent 55%),
-    radial-gradient(circle at 100% 100%, #5a1846 0%, transparent 50%),
+    radial-gradient(circle at 15% 0%, var(--bg-glow-1) 0%, transparent 55%),
+    radial-gradient(circle at 100% 100%, var(--bg-glow-2) 0%, transparent 50%),
     var(--bg);
   color: var(--text);
   line-height: 1.5;
@@ -107,13 +116,15 @@ a:focus-visible {
   padding: 14px;
   border: 0;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: linear-gradient(135deg, var(--button-from), var(--button-to));
   color: var(--on-accent);
+  box-shadow: 0 8px 24px var(--button-glow);
   cursor: pointer;
 }
 
 .button:disabled {
   opacity: 0.5;
+  box-shadow: none;
   cursor: default;
 }
 
@@ -219,7 +230,7 @@ a:focus-visible {
   flex-shrink: 0;
   padding: 4px 8px;
   border-radius: 999px;
-  background: rgba(255, 204, 51, 0.15);
+  background: var(--accent-soft);
   color: var(--accent);
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -248,8 +259,8 @@ a:focus-visible {
 .notice {
   padding: 12px 16px;
   border-radius: 14px;
-  background: rgba(255, 95, 162, 0.12);
-  border: 1px solid rgba(255, 95, 162, 0.35);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
 }
 
 /* Mural de recados */
@@ -298,7 +309,7 @@ textarea.over-limit:focus-visible {
 .limit-warning {
   margin: 0;
   border-color: var(--danger);
-  background: rgba(255, 107, 107, 0.12);
+  background: var(--danger-soft);
 }
 
 .limit-note {
@@ -359,7 +370,7 @@ textarea.over-limit:focus-visible {
   flex-shrink: 0;
   font: inherit;
   padding: 6px 14px;
-  border: 1px solid rgba(255, 107, 107, 0.45);
+  border: 1px solid var(--danger-border);
   border-radius: 999px;
   background: none;
   color: var(--danger);
