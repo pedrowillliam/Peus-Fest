@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import { party } from '../config';
 import type { Guest } from '../lib/guest';
 import { MessageBox } from './MessageBox';
+import { ShotRoulette } from './ShotRoulette';
 
 export type Game = {
   id: string;
@@ -19,5 +20,12 @@ export const games: Game[] = [
     title: 'Caixa de recados',
     description: `Deixe uma mensagem que só ${party.birthdayName} vai ler.`,
     component: MessageBox,
+  },
+  {
+    id: 'roleta',
+    emoji: '🍻',
+    title: 'Roleta de shots',
+    description: 'Gire a roleta e cumpra o desafio que cair.',
+    component: ShotRoulette,
   },
 ];
