@@ -51,6 +51,20 @@ Só o aniversariante pode ler os recados. Convidados não leem nenhum, nem o pr�
 - Textos neutros quanto a gênero: use o nome ("Só Pedro William vai ler"), não "o aniversariante" nem "ele".
 - Mobile-first: coluna de até 480px, inputs com fonte ≥ 16px (evita zoom no iPhone), respeitar `safe-area-inset`.
 
+## Commits
+
+Siga o [Conventional Commits](https://www.conventionalcommits.org/pt-br/), com a mensagem em pt-BR:
+
+- Formato: `tipo(escopo opcional): descrição`. O tipo segue o padrão em inglês (`feat`, `fix`,
+  `docs`, `style`, `refactor`, `perf`, `test`, `build`, `chore`, `ci`). A descrição vai em
+  português, minúscula, no presente e sem ponto final.
+- Escopos usados: `recados`, `admin`, `home`, `boas-vindas`, `supabase`, `config`.
+- Corpo opcional em pt-BR explicando o porquê. Mudança que quebra algo leva `!` ou um rodapé `BREAKING CHANGE:`.
+- Um assunto por commit: separe, por exemplo, `feat` de `docs` quando forem mudanças independentes.
+
+Exemplos: `feat(recados): adiciona aviso ao atingir 500 caracteres`,
+`fix(admin): corrige recados duplicados no realtime`, `docs: atualiza passo a passo do Supabase`.
+
 ## Pegadinhas conhecidas
 
 - `crypto.randomUUID` não existe em HTTP fora de localhost (teste no celular via IP da rede).
@@ -70,5 +84,12 @@ esses processos do Edge depois (eles não fecham sozinhos). Nunca encerre o Edge
 ## Ambiente
 
 Windows 11, Node 24. O GitHub CLI fica em `C:\Program Files\GitHub CLI\gh.exe` (pode não estar no
-PATH do Git Bash). Repositório: github.com/pedrowillliam/aniversario (público, branch `main`).
+PATH do Git Bash). Repositório: github.com/pedrowillliam/Peus-Fest (público, branch `main`; antes se chamava `aniversario`).
 Commit e push só quando o usuário pedir.
+
+Produção: **https://niver-pedro-william.vercel.app** (projeto Vercel `niver-pedro-william`). As
+variáveis `VITE_SUPABASE_*` estão cadastradas na Vercel (production, preview e development).
+Deploy automático: todo push na `main` publica em produção (repositório ligado à Vercel).
+Vercel CLI via `npx --yes vercel@62` (não está instalado globalmente). Deploy manual, se precisar:
+`npx --yes vercel@62 deploy --prod --yes`. O CLI grava `VERCEL_OIDC_TOKEN` no `.env.local`, que
+é gitignored. Nunca exiba esse valor.
