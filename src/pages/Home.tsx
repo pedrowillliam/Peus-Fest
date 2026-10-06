@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { BirthdayPhoto } from '../components/BirthdayPhoto';
 import { Countdown } from '../components/Countdown';
 import { party } from '../config';
 import { games } from '../games/registry';
@@ -24,7 +25,10 @@ export function Home({ guest }: { guest: Guest }) {
           não é você?
         </button>
       </p>
-      <h1>Aniversário de {party.birthdayName}</h1>
+      <div className="hero">
+        <BirthdayPhoto src={party.photos.home} size={96} />
+        <h1>Aniversário de {party.birthdayName}</h1>
+      </div>
       <p className="muted dates">
         🎂 Aniversário: {birthdayFormat.format(party.birthday)}
         <br />
