@@ -40,10 +40,12 @@ Só o aniversariante pode ler os recados. Convidados não leem nenhum, nem o pr�
 
 - Quem garante isso é o **RLS no banco**, não a interface. O repositório e a publishable key são públicos.
 - O insert do convidado **não** pode ter `.select()`: o anon não tem policy de leitura.
-- A leitura só é liberada para `auth.uid()` presente em `public.admins`.
+- Leitura e exclusão só são liberadas para `auth.uid()` presente em `public.admins`.
 - Nunca coloque e-mail, senha do banco ou a secret key (`sb_secret_...`) no repositório.
   O `.env.local` (gitignored) tem só `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY`.
-- Mudou o schema? Atualize `supabase/schema.sql`. Quem roda o SQL é o usuário, no SQL Editor do painel.
+- Mudou o schema? Atualize `supabase/schema.sql` (script completo, para banco novo) e aplique só a
+  diferença no banco existente: pelo MCP do Supabase (configurado com escopo local, se estiver
+  autenticado), mostrando o SQL ao usuário antes, ou passando o trecho para ele rodar no SQL Editor.
 
 ## Convenções
 
