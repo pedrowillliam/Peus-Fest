@@ -95,7 +95,9 @@ esses processos do Edge depois (eles não fecham sozinhos). Nunca encerre o Edge
 
 Windows 11, Node 24. O GitHub CLI fica em `C:\Program Files\GitHub CLI\gh.exe` (pode não estar no
 PATH do Git Bash). Repositório: github.com/pedrowillliam/Peus-Fest (público, branch `main`; antes se chamava `aniversario`).
-Commit e push só quando o usuário pedir.
+Commit e push só com pedido explícito do usuário a cada vez ("commita", "pode subir"). Escolher uma
+opção, aprovar um plano ou responder a uma pergunta minha **não** conta como pedido. Na dúvida,
+deixe as mudanças locais e pergunte.
 
 Produção: **https://niver-pedro-william.vercel.app** (projeto Vercel `niver-pedro-william`). As
 variáveis `VITE_SUPABASE_*` estão cadastradas na Vercel (production, preview e development).
