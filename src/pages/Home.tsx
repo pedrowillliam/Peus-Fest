@@ -20,7 +20,7 @@ export function Home({ guest }: { guest: Guest }) {
         <BirthdayPhoto src={party.photos.home} size={96} />
         <div>
           <h1>Farrinha do {party.nickname}</h1>
-          <p className="muted tagline">Há {party.age} anos sendo gostoso nesse mundo</p>
+          <p className="muted tagline">Há {party.age} anos sendo gostoso nesse mundo!</p>
         </div>
       </div>
 
