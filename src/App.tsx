@@ -3,12 +3,14 @@ import { useGuest } from './lib/guest';
 import { Admin } from './pages/Admin';
 import { GamePage } from './pages/GamePage';
 import { Home } from './pages/Home';
+import { QuizHost } from './pages/QuizHost';
 import { Welcome } from './pages/Welcome';
 
 export function App() {
   return (
     <Routes>
       <Route path="/admin" element={<Admin />} />
+      <Route path="/admin/quiz" element={<QuizHost />} />
       <Route path="*" element={<GuestArea />} />
     </Routes>
   );

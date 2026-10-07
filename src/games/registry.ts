@@ -3,6 +3,7 @@ import { party } from '../config';
 import type { Guest } from '../lib/guest';
 import { MessageBox } from './MessageBox';
 import { PhotoWall } from './PhotoWall';
+import { Quiz } from './Quiz';
 import { ShotRoulette } from './ShotRoulette';
 
 export type Game = {
@@ -35,5 +36,12 @@ export const games: Game[] = [
     title: 'Mural de fotos',
     description: 'Tire fotos da festa e veja as de todo mundo.',
     component: PhotoWall,
+  },
+  {
+    id: 'quiz',
+    emoji: '🧠',
+    title: `Quiz do ${party.nickname}`,
+    description: `Quem conhece mais o ${party.nickname}? Ao vivo, cada um no seu celular.`,
+    component: Quiz,
   },
 ];

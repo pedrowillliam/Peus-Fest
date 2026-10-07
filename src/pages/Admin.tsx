@@ -86,10 +86,15 @@ function Inbox({ client }: { client: SupabaseClient }) {
   return (
     <>
       {status === 'ready' && (
-        <p className="muted admin-tip">
-          Fotos: com este login, abra o <Link to="/jogo/fotos">Mural de fotos</Link> neste aparelho e toque numa
-          foto para ver o botão Apagar.
-        </p>
+        <>
+          <p className="muted admin-tip">
+            Fotos: com este login, abra o <Link to="/jogo/fotos">Mural de fotos</Link> neste aparelho e toque numa
+            foto para ver o botão Apagar.
+          </p>
+          <p className="muted admin-tip">
+            Quiz: comande as perguntas pelo <Link to="/admin/quiz">painel do quiz</Link>.
+          </p>
+        </>
       )}
 
       {status === 'loading' && <p className="muted">Carregando recados...</p>}

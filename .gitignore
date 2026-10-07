@@ -8,3 +8,6 @@ dist
 .vercel
 .env*
 !.env.example
+
+# Perguntas e gabarito do quiz: o repositório é público.
+supabase/privado/
