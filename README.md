@@ -36,6 +36,21 @@ quem lê é só a conta de admin, na página **`/admin`**. O bloqueio é feito p
    (cria a tabela `photos` e o bucket de arquivos `photos`).
 8. Para o placar da home, rode [`supabase/placar.sql`](supabase/placar.sql) (função que devolve só as
    contagens de fotos e recados). Sem ela, o placar simplesmente não aparece.
+9. Para o quiz, rode [`supabase/quiz.sql`](supabase/quiz.sql) e depois
+   `supabase/privado/quiz-perguntas.sql` (as perguntas e o gabarito). Esse segundo arquivo **não vai
+   para o git**, porque o repositório é público. Pode rodá-lo de novo sempre que mudar as perguntas.
+
+## Quiz individual (ao vivo)
+
+1. Entre em **`/admin/quiz`** com a conta de admin (pode deixar essa tela numa TV: o gabarito só
+   aparece na revelação).
+2. **Abrir inscrições**: cada pessoa entra em *Quiz do Peu* no próprio celular, com o nome que já
+   digitou na entrada do site (é só tocar em "Entrar no quiz").
+3. **Começar quiz**: cada pergunta tem 30 s. A resposta certa aparece sozinha quando todo mundo
+   responde ou o tempo acaba. Depois, **Próxima pergunta**.
+4. **Encerrar quiz** e, quando quiser, **Revelar vencedores** (aparece em todos os celulares).
+   1 ponto por acerto. Empate: vence quem respondeu mais rápido nas que acertou.
+5. **Reiniciar quiz** apaga quem entrou e as respostas (use depois de testar).
 
 Sem o `.env.local`, o site abre normalmente, mas os recados mostram que não estão conectados.
 
@@ -62,13 +77,18 @@ ampliada mostra o botão **Apagar foto**, só para a conta de admin.
 | `supabase/schema.sql` | Tabelas e permissões dos recados |
 | `supabase/fotos.sql` | Tabela, bucket e permissões do mural de fotos |
 | `supabase/placar.sql` | Contagens do placar (sem expor o conteúdo dos recados) |
+| `src/games/Quiz.tsx` | Quiz: tela de quem joga |
+| `src/pages/QuizHost.tsx` | Quiz: painel de comando (`/admin/quiz`) |
+| `supabase/quiz.sql` | Quiz: tabelas e funções (a correção acontece no banco) |
+| `supabase/privado/quiz-perguntas.sql` | Perguntas e gabarito (fora do git) |
 
 ## Como funciona
 
 1. O convidado abre o site e digita o nome (fica salvo no celular, não precisa digitar de novo).
 2. Tela inicial: "Farrinha do Peu", foto, frase, placar da festa, brincadeiras e a playlist do Spotify.
 3. Cada brincadeira tem sua página em `/jogo/<id>`. Hoje: **Caixa de recados** (`/jogo/recados`),
-   **Roleta de shots** (`/jogo/roleta`) e **Mural de fotos** (`/jogo/fotos`).
+   **Roleta de shots** (`/jogo/roleta`), **Mural de fotos** (`/jogo/fotos`) e **Quiz do Peu**
+   (`/jogo/quiz`).
 
 ## Cronograma
 

@@ -51,13 +51,33 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
   galeria); no iPhone abre o menu de compartilhar ("Salvar Imagem" vai para o app Fotos). O arquivo é
   buscado ao ampliar, porque o iPhone só aceita `navigator.share` logo após o toque, e o `<img>` usa
   `crossOrigin` para reaproveitar o cache. O storage do Supabase responde com CORS `*`.
+- Quiz individual, ao vivo (estilo Kahoot), comandado pelo admin. Era em duplas; o usuário mudou para
+  individual, um jogador por celular, com o nome da entrada do site:
+  - `src/pages/QuizHost.tsx`: `/admin/quiz` (atrás do `RequireAdmin`). Pode ir para a TV: o gabarito só
+    aparece na fase `reveal`, e o ranking só antes de `results` se o admin tocar em "espiar". Revela
+    sozinho quando todo mundo responde ou 1,5 s depois do fim do tempo, uma vez por pergunta.
+  - `src/games/Quiz.tsx`: tela de quem joga. Entra com um toque usando `guest.name`. O jogador fica no
+    localStorage (`aniversario:quiz`) amarrado ao `round`; se o admin reiniciar, entra de novo.
+    `quiz_join` é idempotente por `guest_id` (o mesmo aparelho volta como o mesmo jogador).
+  - `src/lib/quiz.ts`: `useQuizState` (realtime em `quiz_state` + consulta a cada 4 s, ignorando
+    respostas fora de ordem; cronômetro pelo relógio do servidor), `useMsLeft`, `useRanking`.
+  - `supabase/quiz.sql`: fases `closed → lobby → question ↔ reveal → finished → results`. Tudo
+    passa por funções `security definer` (`quiz_current`, `quiz_join`, `quiz_answer`, `quiz_ranking`;
+    só admin: `quiz_progress`, `quiz_set_phase`, `quiz_reset`). **A correção é no banco**; o
+    celular nunca recebe o gabarito antes da revelação. 30 s por pergunta (`quiz_time_limit()`).
+  - Pergunta pode ter imagem (coluna `image`, caminho de um arquivo em `public/quiz/`). A imagem fica
+    pública (vai no site e no repositório); o texto da pergunta e o gabarito, não.
+  - **Perguntas e gabarito ficam em `supabase/privado/quiz-perguntas.sql`, que é gitignored**,
+    porque o repositório é público. Nunca coloque perguntas ou respostas em arquivo versionado.
+- `src/components/RequireAdmin.tsx`: login + checagem de admin das páginas `/admin` e `/admin/quiz`.
 - `src/lib/`: `uuid.ts` (UUID v4 que funciona em HTTP), `merge.ts` (junta listas por id, mais novo
   primeiro), `format.ts` (data/hora pt-BR).
 - `src/pages/Admin.tsx`: `/admin`, com login Supabase (e-mail + senha), onde só o aniversariante **lê** os recados, ao vivo via realtime.
 - `src/App.tsx`: `/admin` fica fora do portão de nome. O resto exige nome (`Welcome`) antes.
 - `supabase/schema.sql`: tabelas `messages` e `admins`, com RLS.
 - `supabase/fotos.sql`: tabela `photos`, bucket público `photos` (só JPEG, até 3 MB) e policies.
-  Roda depois do `schema.sql`. `supabase/placar.sql` roda depois do `fotos.sql`.
+  Roda depois do `schema.sql`. `supabase/placar.sql` roda depois do `fotos.sql`, e `quiz.sql` depois
+  do `placar.sql`.
 
 ## Regras de privacidade dos recados (requisito do usuário)
 
@@ -120,6 +140,15 @@ com `--remote-debugging-port`, controle pelo DevTools Protocol (o `WebSocket` na
 e tire o print só quando a página de teste sinalizar que terminou. Para testar sem o banco real, use um
 servidor falso local que imite as rotas REST/storage do Supabase. Atenção: o supabase-js envia o
 upload de `Blob` como `multipart/form-data`.
+
+SQL com lógica (o quiz) se testa de verdade no **PGlite** (`@electric-sql/pglite`, numa pasta fora do
+projeto), simulando o mínimo do Supabase: papéis `anon`/`authenticated`, `auth.uid()` lendo
+`request.jwt.claim.sub`, `publication supabase_realtime` e a tabela `admins`. O mesmo PGlite pode
+servir as RPCs de um servidor falso para testar o site ponta a ponta. Para simular vários celulares,
+use uma origem por aparelho (portas diferentes = localStorage separado) e uma **janela** por aparelho
+(`Target.createTarget` com `newWindow`), porque abas em segundo plano ficam ocultas e com os timers
+atrasados. Nas esperas via `Runtime.evaluate`, devolva booleano (`!!(...)`): um elemento do DOM não
+volta com `returnByValue`.
 
 ## Ambiente
 
