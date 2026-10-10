@@ -735,14 +735,16 @@ textarea.over-limit:focus-visible {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-content: safe center; /* se não couber, rola sem cortar o topo */
   gap: 12px;
   padding: max(16px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  overflow-y: auto;
   background: var(--overlay);
 }
 
 .lightbox-image {
   max-width: 100%;
-  max-height: 75dvh;
+  max-height: 62dvh; /* sobra espaço para as reações */
   border-radius: 8px;
   object-fit: contain;
 }
@@ -1073,4 +1075,59 @@ button.quiz-option:disabled {
 
 .quiz-host .quiz-image {
   max-width: 420px;
+}
+
+/* Reações nas fotos */
+.reactions {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reaction-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.reaction {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+
+.reaction.is-mine {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.reaction:disabled {
+  cursor: default;
+}
+
+.reaction-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.reaction-names {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+  font-size: 0.85rem;
+  color: var(--muted);
 }

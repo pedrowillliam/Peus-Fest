@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { PhotoReactions } from '../components/PhotoReactions';
 import { party } from '../config';
 import { useIsAdmin } from '../lib/admin';
 import { formatDateTime } from '../lib/format';
@@ -305,6 +306,7 @@ function ConnectedWall({ guest, client }: { guest: Guest; client: SupabaseClient
               </button>
             </div>
           </div>
+          <PhotoReactions client={client} photoId={open.id} guest={guest} />
           {deleteFailed && (
             <p className="notice lightbox-error" role="alert" onClick={(e) => e.stopPropagation()}>
               Não foi possível apagar a foto. Tente de novo.
