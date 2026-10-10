@@ -51,6 +51,12 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
   galeria); no iPhone abre o menu de compartilhar ("Salvar Imagem" vai para o app Fotos). O arquivo é
   buscado ao ampliar, porque o iPhone só aceita `navigator.share` logo após o toque, e o `<img>` usa
   `crossOrigin` para reaproveitar o cache. O storage do Supabase responde com CORS `*`.
+  Reações com emoji na foto ampliada (`src/components/PhotoReactions.tsx`, `supabase/reacoes.sql`):
+  6 emojis fixos (a lista do componente tem que bater com o `check` do SQL, incluindo o caractere
+  invisível do ❤️), toque liga/desliga, mostra os nomes de quem reagiu. A tabela não é legível
+  direto: tudo passa por `photo_reactions_list`/`photo_react`, que nunca devolvem `guest_id` (com
+  ele, daria para tirar a reação dos outros). Atualiza a cada 5 s com a foto aberta. Se as funções
+  não existirem ou falharem, a barra some e o mural segue normal.
 - Quiz individual, ao vivo (estilo Kahoot), comandado pelo admin. Era em duplas; o usuário mudou para
   individual, um jogador por celular, com o nome da entrada do site:
   - `src/pages/QuizHost.tsx`: `/admin/quiz` (atrás do `RequireAdmin`). Pode ir para a TV: o gabarito só
@@ -77,7 +83,7 @@ previsto na Vercel, `vercel.json` já faz o rewrite das rotas para o SPA). CSS p
 - `supabase/schema.sql`: tabelas `messages` e `admins`, com RLS.
 - `supabase/fotos.sql`: tabela `photos`, bucket público `photos` (só JPEG, até 3 MB) e policies.
   Roda depois do `schema.sql`. `supabase/placar.sql` roda depois do `fotos.sql`, e `quiz.sql` depois
-  do `placar.sql`.
+  do `placar.sql`. `supabase/reacoes.sql` só depende do `fotos.sql`.
 
 ## Regras de privacidade dos recados (requisito do usuário)
 

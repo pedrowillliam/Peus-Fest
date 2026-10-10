@@ -39,6 +39,8 @@ quem lê é só a conta de admin, na página **`/admin`**. O bloqueio é feito p
 9. Para o quiz, rode [`supabase/quiz.sql`](supabase/quiz.sql) e depois
    `supabase/privado/quiz-perguntas.sql` (as perguntas e o gabarito). Esse segundo arquivo **não vai
    para o git**, porque o repositório é público. Pode rodá-lo de novo sempre que mudar as perguntas.
+10. Para as reações com emoji nas fotos, rode [`supabase/reacoes.sql`](supabase/reacoes.sql). Sem ele,
+    o mural funciona normalmente, só sem a barra de reações.
 
 ## Quiz individual (ao vivo)
 
@@ -70,12 +72,14 @@ ampliada mostra o botão **Apagar foto**, só para a conta de admin.
 | `src/games/MessageBox.tsx` | Caixa de recados (convidados enviam) |
 | `src/games/ShotRoulette.tsx` | Roleta de shots |
 | `src/games/PhotoWall.tsx` | Mural de fotos (todos enviam e veem; admin apaga) |
+| `src/components/PhotoReactions.tsx` | Reações com emoji na foto ampliada (com os nomes) |
 | `src/pages/Admin.tsx` | Página `/admin`, onde só você lê os recados |
 | `src/index.css` | Cores do tema (no topo do arquivo) |
 | `src/pages/` | Telas: boas-vindas, início e página de cada brincadeira |
 | `src/lib/guest.tsx` | Identificação do convidado (nome salvo no celular) |
 | `supabase/schema.sql` | Tabelas e permissões dos recados |
 | `supabase/fotos.sql` | Tabela, bucket e permissões do mural de fotos |
+| `supabase/reacoes.sql` | Reações nas fotos (sem expor quem é quem por trás dos nomes) |
 | `supabase/placar.sql` | Contagens do placar (sem expor o conteúdo dos recados) |
 | `src/games/Quiz.tsx` | Quiz: tela de quem joga |
 | `src/pages/QuizHost.tsx` | Quiz: painel de comando (`/admin/quiz`) |
